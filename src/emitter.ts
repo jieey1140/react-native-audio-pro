@@ -1,12 +1,11 @@
-import { NativeEventEmitter } from 'react-native';
-import type { AudioProEvent } from './types';
-import { logDebug } from './utils';
+import { NativeModules, NativeEventEmitter } from 'react-native';
 import { useInternalStore } from './useInternalStore';
-import { NativeAudioPro } from './index';
+import { logDebug } from './utils';
 
-export const emitter = new NativeEventEmitter(NativeAudioPro);
+const AudioPro = NativeModules.AudioPro;
+export const emitter = new NativeEventEmitter(AudioPro);
 
-emitter.addListener('AudioProEvent', (event: AudioProEvent) => {
+emitter.addListener('AudioProEvent', (event) => {
 	logDebug('AudioProEvent', JSON.stringify(event));
 	useInternalStore.getState().updateFromEvent(event);
 });
